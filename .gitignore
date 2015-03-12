@@ -1,0 +1,5 @@
+esp8266/node_modules
+esp8266/public/lib/
+mqtt/broker/node_modules
+mqtt/client/node_modules
+

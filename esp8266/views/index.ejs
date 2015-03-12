@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        ESP8266 - Test
+    </title>
+    <link rel='stylesheet' href='/lib/bootstrap/dist/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='/lib/bootstrap-toggle/css/bootstrap-toggle.min.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <div class="container">
+        <h1>ESP8266</h1>
+        <p>Welcome to the app that turns the blue LED on and off...</p>
+
+        <input id="led" type="checkbox" data-toggle="toggle">
+        
+        
+    </div>
+    
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <script>
+        
+        $('#led').change(function(e) {
+            if ($(this).prop('checked')) {
+                $.get("/api/led/on");
+            } else {
+                $.get("/api/led/off");
+            }
+        });
+        
+        
+        var es = new EventSource('/api/stream/led');
+        es.addEventListener('message', function(e) {
+            console.log("EventSource Message:", e.data);
+            if (e.data === 'on') {
+                if ($('#led').prop('checked') === false) {
+                    $('#led').bootstrapToggle('on');
+                }
+            } else {
+                if ($('#led').prop('checked') === true) {
+                    $('#led').bootstrapToggle('off');
+                }
+            }
+        });
+        
+        
+    </script>
+</body>
+
+</html>
